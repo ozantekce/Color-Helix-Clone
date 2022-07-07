@@ -46,6 +46,7 @@ public class Wall : MonoBehaviour
             if (rotationZ <= rotationZMax)
             {
                 tempWallFragment.transform.SetParent(wall1.transform);
+                tempWallFragment.gameObject.tag = "Hit";
             }
             else
             {
@@ -57,6 +58,8 @@ public class Wall : MonoBehaviour
         wall1.transform.localPosition = Vector3.zero;
         wall2.transform.localPosition = Vector3.zero;
 
+        wall1.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        wall2.transform.localRotation = Quaternion.Euler(Vector3.zero);
 
     }
 

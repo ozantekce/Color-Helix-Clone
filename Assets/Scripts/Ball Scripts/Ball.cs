@@ -6,11 +6,27 @@ public class Ball : MonoBehaviour
 {
     private static float z;
 
-    private float height = 0.58f, speed = 0;
+    private static Color currentColor;
+
+    private MeshRenderer meshRenderer;
+
+
+    private float height = 0.58f, speed = 3;
 
     private bool move;
 
     public static float Z { get => z; set => z = value; }
+    public static Color CurrentColor { get => currentColor; set => currentColor = value; }
+
+    private void Awake()
+    {
+        
+        meshRenderer = GetComponent<MeshRenderer>();
+
+
+
+    }
+
 
     void Start()
     {
@@ -32,6 +48,15 @@ public class Ball : MonoBehaviour
 
         transform.position = new Vector3 (0, height, Ball.z);
 
+
+        UpdateColor();
+
+    }
+
+
+    void UpdateColor()
+    {
+        meshRenderer.sharedMaterial.color = currentColor;
     }
 
 
