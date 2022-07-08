@@ -35,6 +35,8 @@ public class GameController : MonoBehaviour
         
         set => helix = value; }
 
+    public bool ColorBump { get => colorBump; set => colorBump = value; }
+
     private Helix helix;
 
     void Awake()
@@ -100,12 +102,12 @@ public class GameController : MonoBehaviour
 
     void SpawnWalls()
     {
-
+        GameObject wall;
         for (int i = 0; i < wallSpawnNumber; i++)
         {
-            GameObject wall;
             
-            if(Random.value<=0.4f && !colorBump)
+            
+            if(Random.value<=0.2f && !colorBump)
             {
                 colorBump = true;
                 wall = GameObject.Instantiate(Resources.Load("ColorBump") as GameObject, transform.position,Quaternion.identity);
@@ -114,8 +116,9 @@ public class GameController : MonoBehaviour
             {
                 wall = Instantiate(Resources.Load("Walls") as GameObject, transform.position, Quaternion.identity);
             }
-            else if(i>=9 && !colorBump)
+            else if(i>= wallSpawnNumber-1 && !colorBump)
             {
+                colorBump = true;
                 wall = Instantiate(Resources.Load("ColorBump") as GameObject, transform.position, Quaternion.identity);
             }
             else
@@ -130,8 +133,10 @@ public class GameController : MonoBehaviour
             wall.transform.localPosition = new Vector3(0, 0, z);
             float randomRotation = Random.Range(0f,360f);
             wall.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, randomRotation));
-            z += Random.Range(7f,20f);
-            Debug.Log(z);
+
+            z += 7;
+
+            Debug.Log(z+" "+ wall.name);
 
         }
 

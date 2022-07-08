@@ -19,6 +19,7 @@ public class ColorBump : MonoBehaviour
 
     void Start()
     {
+
         transform.parent = null;
         transform.rotation = Quaternion.EulerRotation(Vector3.zero);
 
