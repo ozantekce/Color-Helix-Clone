@@ -7,6 +7,8 @@ TagManager:
   - Hit
   - FinishLine
   - Fail
+  - ColorBump
+  - Wall2
   layers:
   - Default
   - TransparentFX

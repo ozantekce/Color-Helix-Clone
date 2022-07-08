@@ -9,7 +9,9 @@ public class GameController : MonoBehaviour
 
 
     public GameObject finishLine;
+    private GameObject[] walls2;
 
+    private bool colorBump;
 
     public Color[] colors;
     [HideInInspector]
@@ -17,7 +19,7 @@ public class GameController : MonoBehaviour
 
     private int wallSpawnNumber = 11;
     private float z = 7;
-
+    
 
     public static GameController Instance { get => instance; set => instance = value; }
     public Helix Helix {
@@ -45,8 +47,22 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        SpawnWalls();
+        GenetareLevel();
     }
+
+
+    public void GenetareLevel()
+    {
+
+        wallSpawnNumber = 12;
+        z = 7;
+
+        DeleteWalls();
+        colorBump = false;
+        SpawnWalls();
+
+    }
+
 
 
 
@@ -66,6 +82,21 @@ public class GameController : MonoBehaviour
 
     }
 
+    void DeleteWalls()
+    {
+
+        GameObject helix = GameObject.Find("Helix");
+
+        foreach (Transform child in helix.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
+        Destroy(GameObject.FindGameObjectWithTag("ColorBump"));
+
+
+    }
+
 
     void SpawnWalls()
     {
@@ -73,7 +104,27 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < wallSpawnNumber; i++)
         {
             GameObject wall;
-            wall = Instantiate(Resources.Load("Wall") as GameObject,transform.position,Quaternion.identity);
+            
+            if(Random.value<=0.4f && !colorBump)
+            {
+                colorBump = true;
+                wall = GameObject.Instantiate(Resources.Load("ColorBump") as GameObject, transform.position,Quaternion.identity);
+            }
+            else if(Random.value<=0.2)
+            {
+                wall = Instantiate(Resources.Load("Walls") as GameObject, transform.position, Quaternion.identity);
+            }
+            else if(i>=9 && !colorBump)
+            {
+                wall = Instantiate(Resources.Load("ColorBump") as GameObject, transform.position, Quaternion.identity);
+            }
+            else
+            {
+                wall = Instantiate(Resources.Load("Wall") as GameObject, transform.position, Quaternion.identity);
+            }
+
+            
+            
 
             wall.transform.SetParent(Helix.transform);
             wall.transform.localPosition = new Vector3(0, 0, z);

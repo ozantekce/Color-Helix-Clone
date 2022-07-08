@@ -70,6 +70,8 @@ public class Ball : MonoBehaviour
         }else if (other.CompareTag("Fail"))
         {
             print("We hit fail");
+            StartCoroutine(Died());
+            
         }
         else if (other.CompareTag("FinishLine"))
         {
@@ -77,6 +79,15 @@ public class Ball : MonoBehaviour
 
         }
 
+    }
+
+
+    IEnumerator Died()
+    {
+        GameController.Instance.GenetareLevel();
+        Ball.Z = 0;
+        move = false;
+        yield break;
     }
 
 
