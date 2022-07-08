@@ -140,8 +140,7 @@ public class Ball : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         move = false;
-
-        //Flash
+        Camera.main.GetComponent<CameraFollow>().Flash();
         GameController.Instance.Level++;
         
         Ball.Z = 0;
@@ -168,8 +167,8 @@ public class Ball : MonoBehaviour
         GetComponent<SphereCollider>().enabled = false;
 
         yield return new WaitForSeconds(1.5f);
+        Camera.main.GetComponent<CameraFollow>().Flash();
 
-        
         Ball.Z = 0;
         transform.position = new Vector3(0, 0, 0);
         GetComponent<SphereCollider>().enabled = true;
