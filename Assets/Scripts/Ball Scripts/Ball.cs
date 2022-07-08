@@ -11,7 +11,7 @@ public class Ball : MonoBehaviour
     private MeshRenderer meshRenderer;
 
 
-    private float height = 0.58f, speed = 3;
+    private float height = 0.58f, speed = 300;
 
     private bool move;
 
@@ -43,7 +43,7 @@ public class Ball : MonoBehaviour
 
         if (move)
         {
-            Ball.z += speed * 0.025f;
+            Ball.z += speed * 0.025f * Time.deltaTime;
         }
 
         transform.position = new Vector3 (0, height, Ball.z);
@@ -59,6 +59,25 @@ public class Ball : MonoBehaviour
         meshRenderer.sharedMaterial.color = currentColor;
     }
 
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if (other.CompareTag("Hit"))
+        {
+            print("We hit the wall !!!");
+        }else if (other.CompareTag("Fail"))
+        {
+            print("We hit fail");
+        }
+        else if (other.CompareTag("FinishLine"))
+        {
+            print("Finish");
+
+        }
+
+    }
 
 
 }

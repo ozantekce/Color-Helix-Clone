@@ -7,6 +7,10 @@ public class GameController : MonoBehaviour
 
     private static GameController instance;
 
+
+    public GameObject finishLine;
+
+
     public Color[] colors;
     [HideInInspector]
     public Color hitColor, failColor;
@@ -76,8 +80,11 @@ public class GameController : MonoBehaviour
             float randomRotation = Random.Range(0f,360f);
             wall.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, randomRotation));
             z += Random.Range(7f,20f);
+            Debug.Log(z);
 
         }
+
+        finishLine.transform.position = new Vector3(0, 0.03f, z);
 
     }
 

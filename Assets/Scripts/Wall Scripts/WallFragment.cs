@@ -23,8 +23,11 @@ public class WallFragment : MonoBehaviour
         else
         {
             meshRenderer.material.color= GameController.Instance.failColor;
-
         }
+
+        transform.localPosition = Vector3.zero;
+        
+
 
     }
 
