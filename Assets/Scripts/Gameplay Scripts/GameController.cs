@@ -19,7 +19,8 @@ public class GameController : MonoBehaviour
 
     private int wallSpawnNumber = 11;
     private float z = 7;
-    
+
+    private float smallWallChange = 10f;
 
     public static GameController Instance { get => instance; set => instance = value; }
     public Helix Helix {
@@ -36,6 +37,31 @@ public class GameController : MonoBehaviour
         set => helix = value; }
 
     public bool ColorBump { get => colorBump; set => colorBump = value; }
+    public int Level {
+        get {
+            return PlayerPrefs.GetInt("Level", 1);
+        }
+        set
+        {
+            PlayerPrefs.SetInt("Level", value);
+
+        }
+    
+    }
+
+    public float SmallWallChange { get
+        {
+            return  Mathf.Min( (15+Level)/100f,0.7f);
+        }
+    }
+
+    public int WallSpawnNumber
+    {
+        get
+        {
+            return Mathf.Min((8 + Level/5),30);
+        }
+    }
 
     private Helix helix;
 
@@ -49,6 +75,7 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        
         GenetareLevel();
     }
 
@@ -56,7 +83,10 @@ public class GameController : MonoBehaviour
     public void GenetareLevel()
     {
 
-        wallSpawnNumber = 12;
+        GenerateColors();
+
+        Debug.Log("currentLevel : "+Level);
+        wallSpawnNumber = WallSpawnNumber;
         z = 7;
 
         DeleteWalls();
@@ -136,7 +166,7 @@ public class GameController : MonoBehaviour
 
             z += 7;
 
-            Debug.Log(z+" "+ wall.name);
+            //Debug.Log(z+" "+ wall.name);
 
         }
 

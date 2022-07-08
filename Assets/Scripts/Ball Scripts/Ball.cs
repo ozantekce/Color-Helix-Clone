@@ -9,7 +9,10 @@ public class Ball : MonoBehaviour
 
     private static Color currentColor;
 
+    public static bool isGameOver;
+
     private MeshRenderer meshRenderer;
+    private SpriteRenderer splash;
 
     private float lerpAmount;
 
@@ -24,6 +27,8 @@ public class Ball : MonoBehaviour
     {
         
         meshRenderer = GetComponent<MeshRenderer>();
+        splash = transform.GetChild(0).GetComponent<SpriteRenderer>();
+
 
         destroyWallList = new List<GameObject>();
 
@@ -32,11 +37,16 @@ public class Ball : MonoBehaviour
 
     void Start()
     {
+
+        CurrentColor = GameController.Instance.hitColor;
         move = false;
     }
 
     void Update()
     {
+
+        if (isGameOver)
+            return;
 
         if (Touch.IsPressing())
         {
@@ -55,7 +65,6 @@ public class Ball : MonoBehaviour
 
     }
 
-
     void UpdateColor()
     {
         meshRenderer.sharedMaterial.color = currentColor;
@@ -65,6 +74,7 @@ public class Ball : MonoBehaviour
                 ,lerpAmount);
             lerpAmount += Time.deltaTime*0.1f;
         }
+
         if(lerpAmount >= 1)
         {
             isRising = false;
@@ -89,7 +99,7 @@ public class Ball : MonoBehaviour
             isRising = true;
             hittedColorBump = other.GetComponent<ColorBump>();
         }
-        else if (other.CompareTag("Fail"))
+        else if (other.CompareTag("Fail") && !isGameOver)
         {
             print("We hit fail");
             StartCoroutine(GameOver());
@@ -117,7 +127,8 @@ public class Ball : MonoBehaviour
         
         
 
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(1f);
+        destroyWallList.Remove(wall);
         Destroy(wall.gameObject);
     }
 
@@ -131,19 +142,45 @@ public class Ball : MonoBehaviour
         move = false;
 
         //Flash
-        //Levell++
+        GameController.Instance.Level++;
+        
         Ball.Z = 0;
         Camera.main.GetComponent<CameraFollow>().enabled = true;
         GameController.Instance.GenetareLevel();
+        
+        
+
 
     }
 
+    
     IEnumerator GameOver()
     {
-        GameController.Instance.GenetareLevel();
+        isGameOver = true;
+        
+        splash.color = currentColor;
+        splash.transform.position = new Vector3(0, 0.7f, Ball.Z - 0.05f);
+        splash.transform.eulerAngles = new Vector3(0, 0, Random.value * 360);
+        splash.enabled = true;
+
+        meshRenderer.enabled = false;
+
+        GetComponent<SphereCollider>().enabled = false;
+
+        yield return new WaitForSeconds(1.5f);
+
+        
         Ball.Z = 0;
+        transform.position = new Vector3(0, 0, 0);
+        GetComponent<SphereCollider>().enabled = true;
         move = false;
-        yield break;
+        GameController.Instance.GenetareLevel();
+        
+        splash.enabled=false;
+        meshRenderer.enabled=true;
+        isGameOver = false;
+        
+
     }
 
 

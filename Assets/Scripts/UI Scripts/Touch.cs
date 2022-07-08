@@ -19,7 +19,7 @@ public class Touch : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 print("we are not pressing");
             }*/
 
-            return pressing;
+            return pressing && !Ball.isGameOver;
         }
     }
 

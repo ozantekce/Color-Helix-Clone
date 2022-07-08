@@ -44,7 +44,7 @@ public class Wall : MonoBehaviour
         wall2.transform.SetParent(transform);
 
 
-        if(Random.value <= 0.2)
+        if(Random.value <= GameController.Instance.SmallWallChange)
         {
             smallWall = true;
         }

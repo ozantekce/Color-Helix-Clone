@@ -20,11 +20,12 @@ public class WallFragment : MonoBehaviour
         {
 
             GameObject colorBump = GameObject.FindGameObjectWithTag("ColorBump");
-
-            if(transform.parent.transform.position.z > colorBump.transform.position.z)
+            
+            if(colorBump!=null && transform.parent.parent.transform.position.z > colorBump.transform.position.z)
             {
-                Debug.Log(transform.parent.transform.position.z + " "+colorBump.transform.position.z);
+                //Debug.Log(transform.parent.transform.position.z + " "+colorBump.transform.position.z);
                 GameController.Instance.hitColor = colorBump.GetComponent<ColorBump>().Color;
+                
             }
 
 
