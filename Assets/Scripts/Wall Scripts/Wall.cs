@@ -15,6 +15,8 @@ public class Wall : MonoBehaviour
     private float rotationZMax = 180;
 
 
+    private bool smallWall;
+
     void Awake()
     {
         wallFragment = Resources.Load("WallFragment") as GameObject;
@@ -42,6 +44,21 @@ public class Wall : MonoBehaviour
         wall2.transform.SetParent(transform);
 
 
+        if(Random.value <= 0.2)
+        {
+            smallWall = true;
+        }
+
+        if (smallWall)
+        {
+            rotationZMax = 90;
+        }
+        else
+        {
+            rotationZMax = 180;
+        }
+
+
         for (int i = 0; i < 100; i++)
         {
             GameObject tempWallFragment = Instantiate(wallFragment, transform.position, Quaternion.Euler(0,0,rotationZ));
@@ -67,9 +84,18 @@ public class Wall : MonoBehaviour
         wall1.transform.localRotation = Quaternion.Euler(Vector3.zero);
         wall2.transform.localRotation = Quaternion.Euler(Vector3.zero);
 
-        GameObject wallFragmentChild = wall1.transform.GetChild(25).gameObject;
+        if (smallWall)
+        {
+            GameObject wallFragmentChild = wall1.transform.GetChild(14).gameObject;
+            AddStar(wallFragmentChild);
+        }
+        else
+        {
+            GameObject wallFragmentChild = wall1.transform.GetChild(25).gameObject;
+            AddStar(wallFragmentChild);
+        }
 
-        AddStar(wallFragmentChild);
+
 
     }
 
