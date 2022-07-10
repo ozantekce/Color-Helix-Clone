@@ -20,6 +20,8 @@ public class Ball : MonoBehaviour
 
     private bool move,isRising;
 
+    public bool perfectStar;
+
     public static float Z { get => z; set => z = value; }
     public static Color CurrentColor { get => currentColor; set => currentColor = value; }
 
@@ -92,6 +94,7 @@ public class Ball : MonoBehaviour
             GameObject wall = other.transform.parent.gameObject;
             if (!destroyWallList.Contains(wall))
                 StartCoroutine(DestroyWall(wall));
+
         }
         else if (other.CompareTag("ColorBump"))
         {
@@ -111,12 +114,18 @@ public class Ball : MonoBehaviour
             StartCoroutine(PlayNewLevel());
         }
 
+        if (other.CompareTag("Star"))
+        {
+            perfectStar = true;
+        }
+
     }
 
     private List<GameObject> destroyWallList;
     private IEnumerator DestroyWall(GameObject wall)
     {
         destroyWallList.Add(wall);
+
         foreach (Transform child in wall.transform)
         {
             Rigidbody rb = child.GetComponent<Rigidbody>();
