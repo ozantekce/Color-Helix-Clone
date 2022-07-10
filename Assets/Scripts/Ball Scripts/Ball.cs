@@ -22,6 +22,8 @@ public class Ball : MonoBehaviour
 
     public bool perfectStar;
 
+    public bool displayed;
+
     public static float Z { get => z; set => z = value; }
     public static Color CurrentColor { get => currentColor; set => currentColor = value; }
 
@@ -63,7 +65,11 @@ public class Ball : MonoBehaviour
         transform.position = new Vector3 (0, height, Ball.z);
 
 
+        displayed = false;
+
         UpdateColor();
+
+
 
     }
 
@@ -89,11 +95,36 @@ public class Ball : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
+
+        if (other.CompareTag("Star"))
+        {
+            perfectStar = true;
+        }
+
         if (other.CompareTag("Hit"))
         {
+
             GameObject wall = other.transform.parent.gameObject;
-            if (!destroyWallList.Contains(wall))
-                StartCoroutine(DestroyWall(wall));
+            if (destroyWallList.Contains(wall))
+                return;
+
+            
+
+            if (perfectStar && !displayed)
+            {
+                GameController.Instance.Score += PlayerPrefs.GetInt("Level") * 2;
+                GameObject pointDisplay = Instantiate(Resources.Load("PointDisplay") as GameObject, transform.position,Quaternion.identity);
+                pointDisplay.GetComponent<PointDisplay>().SetText("PERFECT + " + PlayerPrefs.GetInt("Level")*2);
+            }
+            else if(!perfectStar && !displayed)
+            {
+                GameController.Instance.Score += PlayerPrefs.GetInt("Level");
+                GameObject pointDisplay = Instantiate(Resources.Load("PointDisplay") as GameObject, transform.position, Quaternion.identity);
+                pointDisplay.GetComponent<PointDisplay>().SetText("+ " + PlayerPrefs.GetInt("Level"));
+            }
+            perfectStar = false;
+
+            StartCoroutine(DestroyWall(wall));
 
         }
         else if (other.CompareTag("ColorBump"))
@@ -114,10 +145,7 @@ public class Ball : MonoBehaviour
             StartCoroutine(PlayNewLevel());
         }
 
-        if (other.CompareTag("Star"))
-        {
-            perfectStar = true;
-        }
+
 
     }
 

@@ -10,6 +10,7 @@ TagManager:
   - ColorBump
   - Wall2
   - Star
+  - Wall1
   layers:
   - Default
   - TransparentFX

@@ -86,7 +86,7 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        SumUpWalls();
+        //SumUpWalls();
     }
 
     public void GenetareLevel()
