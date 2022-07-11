@@ -19,7 +19,7 @@ public class Helix : MonoBehaviour
         if(movable && Touch.IsPressing())
         {
             float mouseX = this.GetMouseX();
-            lastDeltaAngle = lastTouchX - mouseX;
+            lastDeltaAngle = (lastTouchX - mouseX)*20*Time.deltaTime;
             angle += lastDeltaAngle * 360f * 1.7f;
             lastTouchX = mouseX;
         }

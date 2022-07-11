@@ -16,7 +16,7 @@ public class Ball : MonoBehaviour
 
     private float lerpAmount;
 
-    private float height = 0.58f, speed = 300;
+    private float height = 0.58f, speed = 250;
 
     private bool move,isRising;
 
@@ -24,12 +24,21 @@ public class Ball : MonoBehaviour
 
     public bool displayed;
 
+
+    private AudioSource failSound;
+    private AudioSource hitSound;
+    private AudioSource levelCompleteSound;
+
     public static float Z { get => z; set => z = value; }
     public static Color CurrentColor { get => currentColor; set => currentColor = value; }
 
     private void Awake()
     {
         
+        failSound = GameObject.Find("FailSound").GetComponent<AudioSource>();
+        hitSound = GameObject.Find("HitSound").GetComponent<AudioSource>();
+        levelCompleteSound = GameObject.Find("LevelCompleteSound").GetComponent<AudioSource>();
+
         meshRenderer = GetComponent<MeshRenderer>();
         splash = transform.GetChild(0).GetComponent<SpriteRenderer>();
 
@@ -123,7 +132,7 @@ public class Ball : MonoBehaviour
                 pointDisplay.GetComponent<PointDisplay>().SetText("+ " + PlayerPrefs.GetInt("Level"));
             }
             perfectStar = false;
-
+            hitSound.Play();
             StartCoroutine(DestroyWall(wall));
 
         }
@@ -173,6 +182,8 @@ public class Ball : MonoBehaviour
 
     IEnumerator PlayNewLevel()
     {
+
+        levelCompleteSound.Play();
         Camera.main.GetComponent<CameraFollow>().enabled = false;
         yield return new WaitForSeconds(1.5f);
 
@@ -192,6 +203,8 @@ public class Ball : MonoBehaviour
     
     IEnumerator GameOver()
     {
+
+        failSound.Play();
         isGameOver = true;
         
         splash.color = currentColor;

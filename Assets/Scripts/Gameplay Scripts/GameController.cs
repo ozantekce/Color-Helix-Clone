@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour
     private static GameController instance;
 
 
+
     public GameObject finishLine;
     private GameObject[] walls2, walls1;
 
@@ -23,6 +24,12 @@ public class GameController : MonoBehaviour
     private float z = 7;
 
     private float smallWallChange = 10f;
+    
+
+    public float GetFinishLineDistance()
+    {
+        return finishLine.transform.position.z;
+    }
 
     public static GameController Instance { get => instance; set => instance = value; }
     public Helix Helix {
